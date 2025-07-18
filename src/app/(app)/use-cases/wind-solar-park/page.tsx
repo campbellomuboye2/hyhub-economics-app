@@ -84,7 +84,7 @@ export default function WindSolarParkPage() {
     const numberOfTanks = C.const12 > 0 ? storageCapacity / C.const12 : 0;
 
     const opexBAU = effectiveGeneration * C.const2;
-    const opexCASE = ((effectiveGeneration - compressorElectricity) * C.const2) +
+    const opexCASE = ((effectiveGeneration - compressorElectricity) * C.const2) -
                      (demiWaterCost * demiWater) +
                      (electrolyserProduction * h2Cost);
     
