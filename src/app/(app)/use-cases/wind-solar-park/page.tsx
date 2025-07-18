@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -14,6 +15,7 @@ import { OutputDashboard } from './components/OutputDashboard';
 import { InvestmentTable } from './components/InvestmentTable';
 import { MultiYearComparisonTable } from './components/MultiYearComparisonTable';
 import { ConstantsAccordion } from './components/ConstantsAccordion';
+import { AboutSection } from './components/AboutSection';
 
 const formSchema = z.object({
   windGeneration: z.number().min(0),

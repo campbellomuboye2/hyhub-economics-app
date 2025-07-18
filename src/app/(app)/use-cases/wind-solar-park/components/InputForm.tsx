@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -6,18 +7,26 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import type { FormInputs } from '@/types';
+import { AboutSection } from './AboutSection';
 
 export function InputForm({ form }: { form: any }) {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle>Input Parameters</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+            Input Parameters
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form className="space-y-6">
             <div className="space-y-4">
-              <h3 className="font-semibold text-primary">A. Operational Cost Analysis</h3>
+              <h3 className="font-semibold text-primary flex items-center gap-2">
+                A. Operational Cost Analysis
+                <AboutSection title="Operational Cost Analysis">
+                  This table provides an overview of the annual energy generation, hydrogen production potential, and associated operational costs for an integrated wind and solar energy facility with hydrogen production (electrolyzer). The comparison between the BAU (Business As Usual) and CASE (additional scenario or optimization) scenarios shows the impact of various operational choices on the total annual costs. Key parameters such as energy yield, consumption, heat losses, water use, storage capacity, and potential revenue from hydrogen sales are quantified. The table supports decision-making regarding the economic feasibility and optimization of hydrogen projects based on renewable energy sources.
+                </AboutSection>
+              </h3>
               <FormField
                 control={form.control}
                 name="windGeneration"

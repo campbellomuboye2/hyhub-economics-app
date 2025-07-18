@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useMemo } from 'react';
@@ -5,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from '@/components/ui/table';
 import type { FormInputs } from '@/types';
 import { CONSTANTS } from '@/lib/constants';
+import { AboutSection } from './AboutSection';
 
 interface MultiYearTableProps {
   formValues: FormInputs;
@@ -57,7 +59,12 @@ export function MultiYearComparisonTable({ formValues, calculations, totalCapex 
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle>B2. Multi-Year Cost Comparison</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+            B2. Multi-Year Cost Comparison
+            <AboutSection title="Multi-Year Cost Comparison">
+                This table shows a nine-year comparison of operational costs (OPEX) and capital expenditures (CAPEX) between the Business As Usual (BAU) scenario and the improved CASE scenario. It assumes a 2% annual price increase for electricity and hydrogen, while the price of demineralized water remains constant. The table shows how costs and revenues develop over the years and highlights the effect of initial investments (CAPEX CASE of €20.2 million) relative to annual operational expenditures (OPEX CASE). This overview supports strategic decision-making regarding the long-term profitability of investments in hydrogen infrastructure.
+            </AboutSection>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -87,7 +94,7 @@ export function MultiYearComparisonTable({ formValues, calculations, totalCapex 
           </TableBody>
           <TableFooter>
             <TableRow className="font-bold text-lg">
-                <TableCell colSpan={4}>Final Sums</TableCell>
+                <TableCell colSpan={4}>Total</TableCell>
                 <TableCell className="text-blue-600">{formatCurrency(cumulativeOpexBau)}</TableCell>
                 <TableCell></TableCell>
                 <TableCell className="text-purple-600">{formatCurrency(cumulativeOpexCase - totalCapex)}</TableCell>

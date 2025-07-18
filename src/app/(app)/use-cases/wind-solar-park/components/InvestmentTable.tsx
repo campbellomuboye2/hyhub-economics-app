@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -5,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import type { InvestmentRow } from '@/types';
+import { AboutSection } from './AboutSection';
 
 interface InvestmentTableProps {
   investmentData: InvestmentRow[];
@@ -23,7 +25,12 @@ export function InvestmentTable({ investmentData, setInvestmentData, totalCapex 
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle>B1. Investment Cost Overview</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+            B1. Investment Cost Overview
+            <AboutSection title="Investment Costs Overview">
+                This table provides an overview of the initial capital investments (CAPEX) required for the development of a small-scale hydrogen production and distribution facility. The investment includes essential components such as the electrolyzer, compressors, storage, infrastructure, and permits. Reference values from the larger HyDeer project are included for comparison, which helps in estimating economies of scale. The totals provide insight into the financial resources required to launch the project and form the basis for economic feasibility analyses and decision-making.
+            </AboutSection>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
