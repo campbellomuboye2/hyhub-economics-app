@@ -30,7 +30,7 @@ export function MultiYearComparisonTable({ formValues, calculations, totalCapex 
       const capexCase = year === 1 ? totalCapex : 0;
       const opexCase = ((effectiveGeneration - compressorElectricity) * compoundedMwhPrice) +
                        (electrolyserProduction * compoundedH2Price) +
-                       (demiWater * compoundedDemiPrice);
+                       (demiWater * -compoundedDemiPrice);
       
       cumulativeOpexBau += opexBau;
       cumulativeOpexCase += opexCase;
