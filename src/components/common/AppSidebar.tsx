@@ -3,7 +3,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, LayoutGrid, BarChart3, LogOut, Wind, Cow } from "lucide-react"
+import { Home, LayoutGrid, BarChart3, LogOut, Wind, Tractor } from "lucide-react"
 
 import {
   SidebarHeader,
@@ -26,7 +26,7 @@ const menuItems = [
     icon: LayoutGrid, 
     subMenu: [
       { href: "/use-cases/wind-solar-park", label: "Wind Solar Park", icon: Wind },
-      { href: "/use-cases/dairy-farm", label: "Dairy Farm", icon: Cow }
+      { href: "/use-cases/dairy-farm", label: "Dairy Farm", icon: Tractor }
     ]
   },
   { href: "#", label: "Reports", icon: BarChart3 },

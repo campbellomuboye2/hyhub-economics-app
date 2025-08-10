@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Cow, Wind } from 'lucide-react';
+import { ArrowRight, Tractor, Wind } from 'lucide-react';
 
 export default function UseCaseSelectionPage() {
   return (
@@ -43,7 +43,7 @@ export default function UseCaseSelectionPage() {
                   <CardTitle className="text-2xl font-bold">
                     Dairy Farm
                   </CardTitle>
-                  <Cow className="h-10 w-10 text-primary" />
+                  <Tractor className="h-10 w-10 text-primary" />
                 </CardHeader>
                 <CardContent className="bg-card rounded-b-lg flex-grow flex flex-col justify-between">
                   <p className="text-muted-foreground">
