@@ -1,4 +1,4 @@
-export interface FormInputs {
+export interface WindSolarParkFormInputs {
   windGeneration: number;
   sunGeneration: number;
   mwProduction: number;
@@ -14,4 +14,21 @@ export interface InvestmentRow {
   item: string;
   capex: number;
   reference: string;
+}
+
+export interface DairyFarmFormInputs {
+  annualMilkProduction: number;
+  electricityPrice: number;
+  gasUsage: number;
+  windTurbines: number;
+  solarPanels: number;
+  electrolyzerProduction: number;
+  fuelCellCurrent: number;
+}
+
+export interface DairyFarmInvestmentRow {
+  id: string;
+  item: string;
+  capex: number;
+  isEditable: boolean;
 }

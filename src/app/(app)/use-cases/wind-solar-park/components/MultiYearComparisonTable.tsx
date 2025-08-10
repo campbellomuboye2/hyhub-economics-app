@@ -4,12 +4,12 @@
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from '@/components/ui/table';
-import type { FormInputs } from '@/types';
+import type { WindSolarParkFormInputs } from '@/types';
 import { CONSTANTS } from '@/lib/constants';
 import { AboutSection } from './AboutSection';
 
 interface MultiYearTableProps {
-  formValues: FormInputs;
+  formValues: WindSolarParkFormInputs;
   calculations: any;
   totalCapex: number;
 }

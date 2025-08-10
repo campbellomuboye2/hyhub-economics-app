@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import type { FormInputs } from '@/types';
+import type { WindSolarParkFormInputs } from '@/types';
 import { AboutSection } from './AboutSection';
 
 export function InputForm({ form }: { form: any }) {

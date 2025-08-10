@@ -6,7 +6,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
-import type { FormInputs, InvestmentRow } from '@/types';
+import type { WindSolarParkFormInputs, InvestmentRow } from '@/types';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { CONSTANTS } from '@/lib/constants';
 
@@ -15,7 +15,6 @@ import { OutputDashboard } from './components/OutputDashboard';
 import { InvestmentTable } from './components/InvestmentTable';
 import { MultiYearComparisonTable } from './components/MultiYearComparisonTable';
 import { ConstantsAccordion } from './components/ConstantsAccordion';
-import { AboutSection } from './components/AboutSection';
 
 const formSchema = z.object({
   windGeneration: z.number().min(0),
@@ -39,7 +38,7 @@ const initialInvestmentData: InvestmentRow[] = [
 ];
 
 export default function WindSolarParkPage() {
-  const [formState, setFormState] = useLocalStorage<FormInputs>('hyhub-form', {
+  const [formState, setFormState] = useLocalStorage<WindSolarParkFormInputs>('hyhub-form', {
     windGeneration: 50000,
     sunGeneration: 30000,
     mwProduction: 20,
@@ -55,7 +54,7 @@ export default function WindSolarParkPage() {
     initialInvestmentData
   );
 
-  const form = useForm<FormInputs>({
+  const form = useForm<WindSolarParkFormInputs>({
     resolver: zodResolver(formSchema),
     defaultValues: formState,
   });
@@ -64,7 +63,7 @@ export default function WindSolarParkPage() {
 
   useEffect(() => {
     const subscription = form.watch((value) => {
-        setFormState(value as FormInputs);
+        setFormState(value as WindSolarParkFormInputs);
     });
     return () => subscription.unsubscribe();
   }, [form, setFormState]);
