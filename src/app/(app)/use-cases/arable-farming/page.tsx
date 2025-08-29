@@ -55,6 +55,12 @@ export default function ArableFarmingPage() {
     const watchedValues = useWatch({ control: form.control });
 
     useEffect(() => {
+        if(isClient) {
+            form.reset(formState);
+        }
+    }, [isClient, form, formState]);
+
+    useEffect(() => {
         const subscription = form.watch((value) => {
             setFormState(value as ArableFarmingFormInputs);
         });
