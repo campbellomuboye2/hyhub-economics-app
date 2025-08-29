@@ -71,7 +71,7 @@ export default function ArableFarmingPage() {
         const output12 = output7 * C.const14;
 
         const opexBAU = (i.gasUsage * C.const13) + ((output3 - output4) * C.const6);
-        const opexCASE = (output3 - output4 - output12) * (C.const6 - (C.const10 * output9)) + (output7 * i.hydrogenPrice);
+        const opexCASE = ((output3 - output4 - output12) * C.const6) - (C.const10 * output9) + (output7 * i.hydrogenPrice);
 
         return {
             output1, output2, output3, output4, output5, output6, output7,
