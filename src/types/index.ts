@@ -1,3 +1,4 @@
+
 export interface WindSolarParkFormInputs {
   windGeneration: number;
   sunGeneration: number;
