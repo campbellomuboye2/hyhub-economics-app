@@ -38,6 +38,11 @@ const initialInvestmentData: Omit<DairyFarmInvestmentRow, 'capex'>[] = [
 ];
 
 export default function DairyFarmPage() {
+    const [isClient, setIsClient] = useState(false);
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
     const [formState, setFormState] = useLocalStorage<DairyFarmFormInputs>('hyhub-dairy-farm-form', {
         annualMilkProduction: 1000000,
         electricityPrice: 0.25,
@@ -132,6 +137,10 @@ export default function DairyFarmPage() {
             prevData.map(row => (row.id === id ? { ...row, capex: value } : row))
         );
     };
+
+    if (!isClient) {
+        return null;
+    }
 
 
     return (
