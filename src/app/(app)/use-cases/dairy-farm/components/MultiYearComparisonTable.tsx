@@ -28,7 +28,7 @@ export function MultiYearComparisonTable({ formValues, calculations, totalCapex 
   const C = DAIRY_FARM_CONSTANTS;
 
   const projectionData = useMemo(() => {
-    const years = Array.from({ length: 9 }, (_, i) => i + 1);
+    const years = Array.from({ length: 15 }, (_, i) => i + 1);
     let cumulativeOpexBau = 0;
     let cumulativeOpexCase = 0;
 
