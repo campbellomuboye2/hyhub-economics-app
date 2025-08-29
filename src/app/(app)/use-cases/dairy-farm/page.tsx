@@ -71,15 +71,15 @@ export default function DairyFarmPage() {
         const output2 = i.gasUsage * C.const6;
         const output3 = i.windTurbines * (C.const12 / 5);
         const output4 = i.solarPanels * C.const7;
-        const output5 = C.const1 * (output3 + output4);
-        const output6 = (1 - C.const1) * (output3 + output4);
+        const output5 = (C.const1/100) * (output3 + output4);
+        const output6 = (1 - (C.const1/100)) * (output3 + output4);
         const output7 = output1 - output5;
         const output8 = output6 / C.const8;
         const output9 = (output8 * C.const9) / (C.const10 * 52);
         const output10 = output9 / C.const13;
-        const output11 = output6 * C.const2;
+        const output11 = output6 * (C.const2 / 100);
         const output12 = C.const11 * output8;
-        const output13 = output6 * C.const3;
+        const output13 = output6 * (C.const3 / 100);
 
         const opexBAU = -((i.electricityPrice * output7) + (i.gasUsage * C.const14) + (output7 * C.const15 * C.const4) + ((output2 / C.const6) * C.const16 * C.const4));
         const opexCASE = -(((output7 - output12) * C.const15 * C.const4 * C.const6) + (((output2 - output11 - output13) * C.const16 * C.const4) / 6));

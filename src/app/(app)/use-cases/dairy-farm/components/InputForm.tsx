@@ -10,7 +10,7 @@ export function InputForm({ form }: { form: any }) {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle>A. Inputs</CardTitle>
+        <CardTitle>A. Input Parameters</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -20,7 +20,7 @@ export function InputForm({ form }: { form: any }) {
               name="annualMilkProduction"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Annual milk production (Liters)</FormLabel>
+                  <FormLabel>L milk per year</FormLabel>
                   <FormControl>
                     <Input type="number" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} />
                   </FormControl>
@@ -33,7 +33,7 @@ export function InputForm({ form }: { form: any }) {
               name="electricityPrice"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Purchased electricity price (€/kWh)</FormLabel>
+                  <FormLabel>Purchased electricity price per KWh (€)</FormLabel>
                   <FormControl>
                     <Input type="number" step="0.01" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} />
                   </FormControl>
@@ -46,7 +46,7 @@ export function InputForm({ form }: { form: any }) {
               name="gasUsage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Business gas usage (m³/year)</FormLabel>
+                  <FormLabel>m³ business use (gas) per year</FormLabel>
                   <FormControl>
                     <Input type="number" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} />
                   </FormControl>
@@ -59,7 +59,7 @@ export function InputForm({ form }: { form: any }) {
               name="windTurbines"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Number of wind turbines (by 5KW capacity)</FormLabel>
+                  <FormLabel>Number of 5KW turbines</FormLabel>
                   <FormControl>
                     <Input type="number" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} />
                   </FormControl>
@@ -85,7 +85,7 @@ export function InputForm({ form }: { form: any }) {
               name="electrolyzerProduction"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Electrolyzer production (KW)</FormLabel>
+                  <FormLabel>Electrolyzer production in KW</FormLabel>
                   <FormControl>
                     <Input type="number" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} />
                   </FormControl>
@@ -98,7 +98,7 @@ export function InputForm({ form }: { form: any }) {
               name="fuelCellCurrent"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Fuel cell current (KW)</FormLabel>
+                  <FormLabel>Fuel cell current in KW</FormLabel>
                   <FormControl>
                     <Input type="number" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} />
                   </FormControl>

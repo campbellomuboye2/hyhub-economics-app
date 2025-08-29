@@ -1,7 +1,8 @@
+
 export const DAIRY_FARM_CONSTANTS = {
-  const1: 0.65, // percentage of total effective generation
-  const2: 0.2, // electrolyzer heat % of e-use
-  const3: 0.3, // fuel cell heat %
+  const1: 65, // percentage of total effective generation
+  const2: 20, // electrolyzer heat % of e-use
+  const3: 30, // fuel cell heat %
   const4: 0.09, // CO₂ cost €/kg
   const5: 0.05, // KWh per liter milk
   const6: 9.77, // KWh per m³ gas
