@@ -55,7 +55,7 @@ export default function DairyFarmPage() {
     
     const [investmentData, setInvestmentData] = useLocalStorage<DairyFarmInvestmentRow[]>(
         'hyhub-dairy-farm-investment',
-        initialInvestmentData.map(d => ({ ...d, capex: 0}))
+        initialInvestmentData.map(d => ({ ...d, capex: d.isEditable ? 0 : 0 }))
     );
 
     const form = useForm<DairyFarmFormInputs>({
@@ -120,24 +120,20 @@ export default function DairyFarmPage() {
         const capexFuelCell = 15000 * (i.fuelCellCurrent / 5);
 
         const needsUpdate = 
-            investmentData.some(d => d.capex === 0 || !d.isEditable) ||
             investmentData.find(d => d.id === 'electrolyzer')?.capex !== capexElectrolyzer ||
             investmentData.find(d => d.id === 'fuelCell')?.capex !== capexFuelCell;
 
         if (isClient && needsUpdate) {
             setInvestmentData(prevData => {
-                const updatedData = initialInvestmentData.map(row => {
-                    const existingRow = prevData.find(d => d.id === row.id);
+                const updatedData = prevData.map(row => {
                     if (row.id === 'electrolyzer') return { ...row, capex: capexElectrolyzer };
                     if (row.id === 'fuelCell') return { ...row, capex: capexFuelCell };
-                    if (row.id === 'storageCompressor') return { ...row, isEditable: true, capex: existingRow?.capex ?? 15000 };
-                    if (row.id === 'heatExchanger') return { ...row, isEditable: true, capex: existingRow?.capex ?? 5000 };
-                    return { ...row, capex: existingRow?.capex ?? 0 };
+                    return row;
                 });
                 return updatedData;
             });
         }
-    }, [watchedValues, form, investmentData, setInvestmentData, isClient]);
+    }, [watchedValues, form, setInvestmentData, isClient]);
     
     const handleInvestmentChange = (id: string, value: number) => {
         setInvestmentData(prevData =>
