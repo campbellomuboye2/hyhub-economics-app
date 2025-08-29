@@ -38,6 +38,11 @@ const initialInvestmentData: InvestmentRow[] = [
 ];
 
 export default function WindSolarParkPage() {
+  const [isClient, setIsClient] = useState(false);
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
   const [formState, setFormState] = useLocalStorage<WindSolarParkFormInputs>('hyhub-form', {
     windGeneration: 50000,
     sunGeneration: 30000,
@@ -60,6 +65,12 @@ export default function WindSolarParkPage() {
   });
 
   const watchedValues = useWatch({ control: form.control });
+
+  useEffect(() => {
+    if(isClient) {
+        form.reset(formState);
+    }
+  }, [isClient, form, formState]);
 
   useEffect(() => {
     const subscription = form.watch((value) => {
@@ -104,6 +115,10 @@ export default function WindSolarParkPage() {
   }, [watchedValues, form]);
   
   const totalCapex = useMemo(() => investmentData.reduce((acc, row) => acc + row.capex, 0), [investmentData]);
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div id="wind-solar-park-page" className="flex flex-col gap-6 p-4 sm:p-6 md:p-8">
