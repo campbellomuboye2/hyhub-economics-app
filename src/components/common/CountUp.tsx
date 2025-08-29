@@ -22,70 +22,40 @@ export function CountUp({
 }: CountUpProps) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const observer = useRef<IntersectionObserver | null>(null);
-  const animationFrameId = useRef<number>();
-  const isAnimating = useRef(false);
 
   useEffect(() => {
-    // Reset count to 0 when the `end` value changes
-    setCount(0);
-    isAnimating.current = false; // Reset animation flag
+    let animationFrameId: number;
+    let observer: IntersectionObserver;
 
-    // If there's a pending animation frame, cancel it
-    if (animationFrameId.current) {
-      cancelAnimationFrame(animationFrameId.current);
-    }
-    
-    // If there's an observer, disconnect it
-    if(observer.current) {
-        observer.current.disconnect();
-    }
+    const animate = (startTime: number, startVal: number, endVal: number) => {
+      const now = performance.now();
+      const progress = Math.min((now - startTime) / (duration * 1000), 1);
+      const current = startVal + progress * (endVal - startVal);
+      setCount(current);
 
-    const startAnimation = () => {
-      if (isAnimating.current) return;
-      isAnimating.current = true;
-
-      let startTime: number | null = null;
-      const animate = (timestamp: number) => {
-        if (!startTime) startTime = timestamp;
-        const progress = timestamp - startTime;
-        const percentage = Math.min(progress / (duration * 1000), 1);
-        const currentCount = percentage * end;
-        setCount(currentCount);
-
-        if (percentage < 1) {
-          animationFrameId.current = requestAnimationFrame(animate);
-        } else {
-          isAnimating.current = false;
-        }
-      };
-      animationFrameId.current = requestAnimationFrame(animate);
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(() => animate(startTime, startVal, endVal));
+      }
     };
 
-    const options = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.1,
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting) {
+        const startTime = performance.now();
+        animate(startTime, 0, end);
+        observer.disconnect();
+      }
     };
-
-    observer.current = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          startAnimation();
-          observer.current?.disconnect();
-        }
-      });
-    }, options);
 
     if (ref.current) {
-      observer.current.observe(ref.current);
+      observer = new IntersectionObserver(handleIntersect, { threshold: 0.1 });
+      observer.observe(ref.current);
     }
 
     return () => {
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
+      cancelAnimationFrame(animationFrameId);
+      if (observer) {
+        observer.disconnect();
       }
-      observer.current?.disconnect();
     };
   }, [end, duration]);
 
