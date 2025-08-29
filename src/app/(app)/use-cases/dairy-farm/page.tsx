@@ -16,7 +16,6 @@ import { InvestmentTable } from './components/InvestmentTable';
 import { OpexDisplay } from './components/OpexDisplay';
 import { ConstantsAccordion } from './components/ConstantsAccordion';
 import { MultiYearComparisonTable } from './components/MultiYearComparisonTable';
-import { ReportGenerator } from '@/components/common/ReportGenerator';
 
 const formSchema = z.object({
   annualMilkProduction: z.number().min(0),
@@ -40,10 +39,7 @@ const initialInvestmentData: Omit<DairyFarmInvestmentRow, 'capex'>[] = [
 
 export default function DairyFarmPage() {
     const [isClient, setIsClient] = useState(false);
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
+    
     const [formState, setFormState] = useLocalStorage<DairyFarmFormInputs>('hyhub-dairy-farm-form', {
         annualMilkProduction: 1000000,
         electricityPrice: 0.25,
@@ -69,6 +65,10 @@ export default function DairyFarmPage() {
 
     const watchedValues = useWatch({ control: form.control });
     
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
     useEffect(() => {
         if(isClient) {
             form.reset(formState);
@@ -120,7 +120,7 @@ export default function DairyFarmPage() {
         const capexFuelCell = 15000 * (i.fuelCellCurrent / 5);
 
         const needsUpdate = 
-            investmentData.length === 0 ||
+            investmentData.some(d => d.capex === 0 || !d.isEditable) ||
             investmentData.find(d => d.id === 'electrolyzer')?.capex !== capexElectrolyzer ||
             investmentData.find(d => d.id === 'fuelCell')?.capex !== capexFuelCell;
 
@@ -180,7 +180,6 @@ export default function DairyFarmPage() {
             />
 
             <ConstantsAccordion />
-            <ReportGenerator rootElementId="dairy-farm-page" reportFileName="HyHub_Dairy_Farm_Report" />
         </div>
     );
 }

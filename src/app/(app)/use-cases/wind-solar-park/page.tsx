@@ -15,7 +15,6 @@ import { OutputDashboard } from './components/OutputDashboard';
 import { InvestmentTable } from './components/InvestmentTable';
 import { MultiYearComparisonTable } from './components/MultiYearComparisonTable';
 import { ConstantsAccordion } from './components/ConstantsAccordion';
-import { ReportGenerator } from '@/components/common/ReportGenerator';
 
 const formSchema = z.object({
   windGeneration: z.number().min(0),
@@ -131,7 +130,6 @@ export default function WindSolarParkPage() {
       />
       
       <ConstantsAccordion />
-      <ReportGenerator rootElementId="wind-solar-park-page" reportFileName="HyHub_Wind_Solar_Park_Report" />
     </div>
   );
 }

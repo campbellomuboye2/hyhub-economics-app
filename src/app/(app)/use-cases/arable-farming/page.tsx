@@ -16,7 +16,6 @@ import { OpexDisplay } from './components/OpexDisplay';
 import { InvestmentTable } from './components/InvestmentTable';
 import { ConstantsAccordion } from './components/ConstantsAccordion';
 import { MultiYearComparisonTable } from './components/MultiYearComparisonTable';
-import { ReportGenerator } from '@/components/common/ReportGenerator';
 
 const formSchema = z.object({
   windTurbines: z.number().min(0),
@@ -57,7 +56,10 @@ export default function ArableFarmingPage() {
 
     useEffect(() => {
         if(isClient) {
-            form.reset(formState);
+            const currentValues = form.getValues();
+            if (JSON.stringify(currentValues) !== JSON.stringify(formState)) {
+                form.reset(formState);
+            }
         }
     }, [isClient, form, formState]);
 
@@ -145,7 +147,6 @@ export default function ArableFarmingPage() {
                 totalCapex={totalCapex}
             />
             <ConstantsAccordion />
-            <ReportGenerator rootElementId="arable-farming-page" reportFileName="HyHub_Arable_Farming_Report" />
         </div>
     );
 }
