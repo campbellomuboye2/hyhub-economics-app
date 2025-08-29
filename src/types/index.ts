@@ -44,6 +44,9 @@ export interface ArableFarmingFormInputs {
   gasUsage: number;
   electrolyzerProduction: number;
   hydrogenPrice: number;
+  priceIncreaseMWh: number;
+  priceIncreaseM3: number;
+  priceIncreaseTonH2: number;
 }
 
 export interface ArableFarmingInvestmentRow {

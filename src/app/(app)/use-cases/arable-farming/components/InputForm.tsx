@@ -95,6 +95,48 @@ export function InputForm({ form }: { form: any }) {
                 )}
               />
             </div>
+            <div className="space-y-4">
+              <h3 className="font-semibold text-primary">B. Multi-Year Cost Projection Controls</h3>
+              <FormField
+                control={form.control}
+                name="priceIncreaseMWh"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price Increase per year (€ p MWh) %</FormLabel>
+                    <FormControl>
+                      <Input type="number" step="0.1" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="priceIncreaseM3"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price Increase per year (€ p m³ gas) %</FormLabel>
+                    <FormControl>
+                      <Input type="number" step="0.1" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="priceIncreaseTonH2"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price Increase per year (€ p ton H₂) %</FormLabel>
+                    <FormControl>
+                      <Input type="number" step="0.1" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || 0)} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </form>
         </Form>
       </CardContent>

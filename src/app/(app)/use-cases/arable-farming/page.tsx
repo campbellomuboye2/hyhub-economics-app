@@ -15,6 +15,7 @@ import { OutputDashboard } from './components/OutputDashboard';
 import { OpexDisplay } from './components/OpexDisplay';
 import { InvestmentTable } from './components/InvestmentTable';
 import { ConstantsAccordion } from './components/ConstantsAccordion';
+import { MultiYearComparisonTable } from './components/MultiYearComparisonTable';
 
 const formSchema = z.object({
   windTurbines: z.number().min(0),
@@ -23,6 +24,9 @@ const formSchema = z.object({
   gasUsage: z.number().min(0),
   electrolyzerProduction: z.number().min(0),
   hydrogenPrice: z.number().min(0),
+  priceIncreaseMWh: z.number(),
+  priceIncreaseM3: z.number().min(0),
+  priceIncreaseTonH2: z.number().min(0),
 });
 
 export default function ArableFarmingPage() {
@@ -38,6 +42,9 @@ export default function ArableFarmingPage() {
         gasUsage: 10000,
         electrolyzerProduction: 1,
         hydrogenPrice: 2000,
+        priceIncreaseMWh: -1.0,
+        priceIncreaseM3: 3.0,
+        priceIncreaseTonH2: 1.0,
     });
     
     const form = useForm<ArableFarmingFormInputs>({
@@ -89,7 +96,7 @@ export default function ArableFarmingPage() {
         const capexElectrolyzer = C.const15 * i.electrolyzerProduction;
         const capexCompressor = C.const16 * (output7 / 365);
         const capexStorage = C.const17 * output10;
-        const capexOther = 0.05 * capexElectrolyzer;
+        const capexOther = C.const18 * capexElectrolyzer;
         
         return [
             { id: 'electrolyzer', item: 'Electrolyzer', capex: capexElectrolyzer },
@@ -125,6 +132,11 @@ export default function ArableFarmingPage() {
             </div>
             
             <InvestmentTable investmentData={investmentData} totalCapex={totalCapex} />
+            <MultiYearComparisonTable 
+                formValues={form.getValues()}
+                calculations={calculations}
+                totalCapex={totalCapex}
+            />
             <ConstantsAccordion />
         </div>
     );
