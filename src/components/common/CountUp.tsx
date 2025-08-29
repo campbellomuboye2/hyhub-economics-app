@@ -14,7 +14,7 @@ interface CountUpProps {
 
 export function CountUp({
   end,
-  duration = 1.5,
+  duration = 1500, // duration in ms
   className,
   prefix = "",
   suffix = "",
@@ -22,41 +22,50 @@ export function CountUp({
 }: CountUpProps) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
+  const animationFrameId = useRef<number>();
+  const startTime = useRef<number>();
+
+  const animate = (timestamp: number) => {
+    if (!startTime.current) {
+      startTime.current = timestamp;
+    }
+
+    const progress = timestamp - startTime.current;
+    const progressFraction = Math.min(progress / duration, 1);
+    const currentVal = progressFraction * end;
+    setCount(currentVal);
+
+    if (progress < duration) {
+      animationFrameId.current = requestAnimationFrame(animate);
+    }
+  };
 
   useEffect(() => {
-    let animationFrameId: number;
-    let observer: IntersectionObserver;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          startTime.current = undefined;
+          animationFrameId.current = requestAnimationFrame(animate);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
 
-    const animate = (startTime: number, startVal: number, endVal: number) => {
-      const now = performance.now();
-      const progress = Math.min((now - startTime) / (duration * 1000), 1);
-      const current = startVal + progress * (endVal - startVal);
-      setCount(current);
-
-      if (progress < 1) {
-        animationFrameId = requestAnimationFrame(() => animate(startTime, startVal, endVal));
-      }
-    };
-
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      if (entries[0].isIntersecting) {
-        const startTime = performance.now();
-        animate(startTime, 0, end);
-        observer.disconnect();
-      }
-    };
-
-    if (ref.current) {
-      observer = new IntersectionObserver(handleIntersect, { threshold: 0.1 });
-      observer.observe(ref.current);
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      if (observer) {
-        observer.disconnect();
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [end, duration]);
 
   return (
