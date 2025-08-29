@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState, useRef } from "react";
@@ -23,24 +24,44 @@ export function CountUp({
   const ref = useRef<HTMLSpanElement>(null);
   const observer = useRef<IntersectionObserver | null>(null);
   const animationFrameId = useRef<number>();
-
-  const startAnimation = () => {
-    let startTime: number | null = null;
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = timestamp - startTime;
-      const percentage = Math.min(progress / (duration * 1000), 1);
-      const currentCount = percentage * end;
-      setCount(currentCount);
-
-      if (percentage < 1) {
-        animationFrameId.current = requestAnimationFrame(animate);
-      }
-    };
-    animationFrameId.current = requestAnimationFrame(animate);
-  };
+  const isAnimating = useRef(false);
 
   useEffect(() => {
+    // Reset count to 0 when the `end` value changes
+    setCount(0);
+    isAnimating.current = false; // Reset animation flag
+
+    // If there's a pending animation frame, cancel it
+    if (animationFrameId.current) {
+      cancelAnimationFrame(animationFrameId.current);
+    }
+    
+    // If there's an observer, disconnect it
+    if(observer.current) {
+        observer.current.disconnect();
+    }
+
+    const startAnimation = () => {
+      if (isAnimating.current) return;
+      isAnimating.current = true;
+
+      let startTime: number | null = null;
+      const animate = (timestamp: number) => {
+        if (!startTime) startTime = timestamp;
+        const progress = timestamp - startTime;
+        const percentage = Math.min(progress / (duration * 1000), 1);
+        const currentCount = percentage * end;
+        setCount(currentCount);
+
+        if (percentage < 1) {
+          animationFrameId.current = requestAnimationFrame(animate);
+        } else {
+          isAnimating.current = false;
+        }
+      };
+      animationFrameId.current = requestAnimationFrame(animate);
+    };
+
     const options = {
       root: null,
       rootMargin: "0px",
@@ -66,7 +87,6 @@ export function CountUp({
       }
       observer.current?.disconnect();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [end, duration]);
 
   return (
