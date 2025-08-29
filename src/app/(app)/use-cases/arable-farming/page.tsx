@@ -87,7 +87,7 @@ export default function ArableFarmingPage() {
         const { output7, output10 } = calculations;
 
         const capexElectrolyzer = C.const15 * i.electrolyzerProduction;
-        const capexCompressor = C.const16 * output7;
+        const capexCompressor = C.const16 * (output7 / 365);
         const capexStorage = C.const17 * output10;
         const capexOther = 0.05 * capexElectrolyzer;
         
