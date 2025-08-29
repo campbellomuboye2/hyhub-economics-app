@@ -20,7 +20,7 @@ export function InvestmentTable({ investmentData, onCapexChange, totalCapex }: I
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle>D. Investment Cost Overview</CardTitle>
+        <CardTitle>B1. Investment Cost Overview</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
