@@ -15,6 +15,7 @@ import { OutputDashboard } from './components/OutputDashboard';
 import { InvestmentTable } from './components/InvestmentTable';
 import { OpexDisplay } from './components/OpexDisplay';
 import { ConstantsAccordion } from './components/ConstantsAccordion';
+import { MultiYearComparisonTable } from './components/MultiYearComparisonTable';
 
 const formSchema = z.object({
   annualMilkProduction: z.number().min(0),
@@ -24,6 +25,9 @@ const formSchema = z.object({
   solarPanels: z.number().min(0),
   electrolyzerProduction: z.number().min(0),
   fuelCellCurrent: z.number().min(0),
+  priceIncreaseMWh: z.number().min(0),
+  priceIncreaseM3: z.number().min(0),
+  priceIncreaseKgCO2: z.number().min(0),
 });
 
 const initialInvestmentData: Omit<DairyFarmInvestmentRow, 'capex'>[] = [
@@ -42,6 +46,9 @@ export default function DairyFarmPage() {
         solarPanels: 500,
         electrolyzerProduction: 100,
         fuelCellCurrent: 50,
+        priceIncreaseMWh: 3.0,
+        priceIncreaseM3: 3.0,
+        priceIncreaseKgCO2: 3.0,
     });
     
     const [investmentData, setInvestmentData] = useLocalStorage<DairyFarmInvestmentRow[]>(
@@ -140,6 +147,12 @@ export default function DairyFarmPage() {
             <InvestmentTable
                 investmentData={investmentData}
                 onCapexChange={handleInvestmentChange}
+                totalCapex={totalCapex}
+            />
+
+            <MultiYearComparisonTable
+                formValues={form.getValues()}
+                calculations={calculations}
                 totalCapex={totalCapex}
             />
 

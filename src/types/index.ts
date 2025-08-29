@@ -24,6 +24,9 @@ export interface DairyFarmFormInputs {
   solarPanels: number;
   electrolyzerProduction: number;
   fuelCellCurrent: number;
+  priceIncreaseMWh: number;
+  priceIncreaseM3: number;
+  priceIncreaseKgCO2: number;
 }
 
 export interface DairyFarmInvestmentRow {
