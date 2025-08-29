@@ -15,6 +15,7 @@ import { OutputDashboard } from './components/OutputDashboard';
 import { InvestmentTable } from './components/InvestmentTable';
 import { MultiYearComparisonTable } from './components/MultiYearComparisonTable';
 import { ConstantsAccordion } from './components/ConstantsAccordion';
+import { ReportGenerator } from '@/components/common/ReportGenerator';
 
 const formSchema = z.object({
   windGeneration: z.number().min(0),
@@ -106,7 +107,7 @@ export default function WindSolarParkPage() {
   const totalCapex = useMemo(() => investmentData.reduce((acc, row) => acc + row.capex, 0), [investmentData]);
 
   return (
-    <div className="flex flex-col gap-6 p-4 sm:p-6 md:p-8">
+    <div id="wind-solar-park-page" className="flex flex-col gap-6 p-4 sm:p-6 md:p-8">
       <header>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">HyHub – Wind Solar Park Use Case</h1>
         <p className="text-muted-foreground">An interactive dashboard for economic analysis.</p>
@@ -130,6 +131,7 @@ export default function WindSolarParkPage() {
       />
       
       <ConstantsAccordion />
+      <ReportGenerator rootElementId="wind-solar-park-page" reportFileName="HyHub_Wind_Solar_Park_Report" />
     </div>
   );
 }

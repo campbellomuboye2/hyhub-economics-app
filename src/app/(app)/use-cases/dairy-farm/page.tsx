@@ -16,6 +16,7 @@ import { InvestmentTable } from './components/InvestmentTable';
 import { OpexDisplay } from './components/OpexDisplay';
 import { ConstantsAccordion } from './components/ConstantsAccordion';
 import { MultiYearComparisonTable } from './components/MultiYearComparisonTable';
+import { ReportGenerator } from '@/components/common/ReportGenerator';
 
 const formSchema = z.object({
   annualMilkProduction: z.number().min(0),
@@ -58,7 +59,7 @@ export default function DairyFarmPage() {
     
     const [investmentData, setInvestmentData] = useLocalStorage<DairyFarmInvestmentRow[]>(
         'hyhub-dairy-farm-investment',
-        []
+        initialInvestmentData.map(d => ({ ...d, capex: 0}))
     );
 
     const form = useForm<DairyFarmFormInputs>({
@@ -67,6 +68,12 @@ export default function DairyFarmPage() {
     });
 
     const watchedValues = useWatch({ control: form.control });
+    
+    useEffect(() => {
+        if(isClient) {
+            form.reset(formState);
+        }
+    }, [isClient, form, formState]);
 
     useEffect(() => {
         const subscription = form.watch((value) => {
@@ -117,7 +124,7 @@ export default function DairyFarmPage() {
             investmentData.find(d => d.id === 'electrolyzer')?.capex !== capexElectrolyzer ||
             investmentData.find(d => d.id === 'fuelCell')?.capex !== capexFuelCell;
 
-        if (needsUpdate) {
+        if (isClient && needsUpdate) {
             setInvestmentData(prevData => {
                 const updatedData = initialInvestmentData.map(row => {
                     const existingRow = prevData.find(d => d.id === row.id);
@@ -130,7 +137,7 @@ export default function DairyFarmPage() {
                 return updatedData;
             });
         }
-    }, [watchedValues, form, investmentData, setInvestmentData]);
+    }, [watchedValues, form, investmentData, setInvestmentData, isClient]);
     
     const handleInvestmentChange = (id: string, value: number) => {
         setInvestmentData(prevData =>
@@ -144,7 +151,7 @@ export default function DairyFarmPage() {
 
 
     return (
-        <div className="flex flex-col gap-6 p-4 sm:p-6 md:p-8">
+        <div id="dairy-farm-page" className="flex flex-col gap-6 p-4 sm:p-6 md:p-8">
             <header>
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">HyHub – Dairy Farm Use Case</h1>
                 <p className="text-muted-foreground">An interactive dashboard for economic analysis of a dairy farm.</p>
@@ -173,6 +180,7 @@ export default function DairyFarmPage() {
             />
 
             <ConstantsAccordion />
+            <ReportGenerator rootElementId="dairy-farm-page" reportFileName="HyHub_Dairy_Farm_Report" />
         </div>
     );
 }

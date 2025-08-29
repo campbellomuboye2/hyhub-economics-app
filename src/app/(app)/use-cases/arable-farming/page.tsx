@@ -16,6 +16,7 @@ import { OpexDisplay } from './components/OpexDisplay';
 import { InvestmentTable } from './components/InvestmentTable';
 import { ConstantsAccordion } from './components/ConstantsAccordion';
 import { MultiYearComparisonTable } from './components/MultiYearComparisonTable';
+import { ReportGenerator } from '@/components/common/ReportGenerator';
 
 const formSchema = z.object({
   windTurbines: z.number().min(0),
@@ -121,7 +122,7 @@ export default function ArableFarmingPage() {
     }
 
     return (
-        <div className="flex flex-col gap-6 p-4 sm:p-6 md:p-8">
+        <div id="arable-farming-page" className="flex flex-col gap-6 p-4 sm:p-6 md:p-8">
             <header>
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">HyHub – Arable Farming Use Case</h1>
                 <p className="text-muted-foreground">An interactive dashboard for economic analysis of an arable farm.</p>
@@ -144,6 +145,7 @@ export default function ArableFarmingPage() {
                 totalCapex={totalCapex}
             />
             <ConstantsAccordion />
+            <ReportGenerator rootElementId="arable-farming-page" reportFileName="HyHub_Arable_Farming_Report" />
         </div>
     );
 }
