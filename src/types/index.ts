@@ -36,3 +36,12 @@ export interface DairyFarmInvestmentRow {
   capex: number;
   isEditable: boolean;
 }
+
+export interface ArableFarmingFormInputs {
+  windTurbines: number;
+  solarPanels: number;
+  electricityPrice: number;
+  gasUsage: number;
+  electrolyzerProduction: number;
+  hydrogenPrice: number;
+}
