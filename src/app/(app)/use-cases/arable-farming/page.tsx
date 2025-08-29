@@ -63,8 +63,8 @@ export default function ArableFarmingPage() {
         const output4 = i.electricityPrice / 10;
         const output5 = (i.gasUsage * C.const3) / 1000;
         const output6 = (output1 + output2) * (1 - C.const5) * 0.25;
-        const output7 = i.electrolyzerProduction / C.const14;
-        const output8 = i.electrolyzerProduction * C.const11;
+        const output7 = output6 / C.const4;
+        const output8 = output6 * C.const11;
         const output9 = output7 * C.const8 * 1000;
         const output10 = (output7 * 1000) / (C.const9 * 52);
         const output11 = output10 / C.const12;
