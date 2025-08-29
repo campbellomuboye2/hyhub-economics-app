@@ -80,7 +80,7 @@ export default function DairyFarmPage() {
         const output4 = i.solarPanels * C.const7;
         const output5 = (C.const1/100) * (output3 + output4);
         const output6 = (1 - (C.const1/100)) * (output3 + output4);
-        const output7 = output1 - output5;
+        const output7 = output1 - output5 > 0 ? output1 - output5 : 0;
         const output8 = output6 / C.const8;
         const output9 = (output8 * C.const9) / (C.const10 * 52);
         const output10 = output9 / C.const13;
@@ -99,25 +99,32 @@ export default function DairyFarmPage() {
     }, [watchedValues, form]);
 
     const totalCapex = useMemo(() => {
+      return investmentData.reduce((acc, row) => acc + (row.capex || 0), 0);
+    }, [investmentData]);
+
+    useEffect(() => {
         const i = form.getValues();
-        
         const capexElectrolyzer = 35000 * (i.electrolyzerProduction / 5);
         const capexFuelCell = 15000 * (i.fuelCellCurrent / 5);
 
-        const updatedInvestmentData = initialInvestmentData.map(row => {
-            const existingRow = investmentData.find(d => d.id === row.id);
-            if (row.id === 'electrolyzer') return { ...row, capex: capexElectrolyzer };
-            if (row.id === 'fuelCell') return { ...row, capex: capexFuelCell };
-            if (row.id === 'storageCompressor') return { ...row, isEditable: true, capex: existingRow?.capex ?? 15000 };
-            if (row.id === 'heatExchanger') return { ...row, isEditable: true, capex: existingRow?.capex ?? 5000 };
-            return { ...row, capex: existingRow?.capex ?? 0 };
-        });
+        const needsUpdate = 
+            investmentData.length === 0 ||
+            investmentData.find(d => d.id === 'electrolyzer')?.capex !== capexElectrolyzer ||
+            investmentData.find(d => d.id === 'fuelCell')?.capex !== capexFuelCell;
 
-        if (JSON.stringify(updatedInvestmentData) !== JSON.stringify(investmentData)) {
-            setInvestmentData(updatedInvestmentData);
+        if (needsUpdate) {
+            setInvestmentData(prevData => {
+                const updatedData = initialInvestmentData.map(row => {
+                    const existingRow = prevData.find(d => d.id === row.id);
+                    if (row.id === 'electrolyzer') return { ...row, capex: capexElectrolyzer };
+                    if (row.id === 'fuelCell') return { ...row, capex: capexFuelCell };
+                    if (row.id === 'storageCompressor') return { ...row, isEditable: true, capex: existingRow?.capex ?? 15000 };
+                    if (row.id === 'heatExchanger') return { ...row, isEditable: true, capex: existingRow?.capex ?? 5000 };
+                    return { ...row, capex: existingRow?.capex ?? 0 };
+                });
+                return updatedData;
+            });
         }
-        
-        return investmentData.reduce((acc, row) => acc + (row.capex || 0), 0);
     }, [watchedValues, form, investmentData, setInvestmentData]);
     
     const handleInvestmentChange = (id: string, value: number) => {

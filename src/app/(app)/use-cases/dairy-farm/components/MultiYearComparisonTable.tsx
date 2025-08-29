@@ -41,7 +41,7 @@ export function MultiYearComparisonTable({ formValues, calculations, totalCapex 
       
       const opexCase = -(((output7 - output12) * compoundedMwhPrice) + (((output2 - output11 - output13)/C.const6) * compoundedM3Price) + ((output7 - output12) * C.const15 * compoundedCO2Price) + (((output2 - output11 - output13)/C.const6) * C.const16 * compoundedCO2Price));
       
-      const capexCase = year === 1 ? totalCapex : 0;
+      const capexCase = year === 1 ? -totalCapex : 0;
       
       cumulativeOpexBau += opexBau;
       cumulativeOpexCase += opexCase;
@@ -64,10 +64,10 @@ export function MultiYearComparisonTable({ formValues, calculations, totalCapex 
   ]);
 
   const { data, cumulativeOpexBau, cumulativeOpexCase } = projectionData;
-  const sumOpexCaseMinusCapex = cumulativeOpexCase - totalCapex;
+  const sumOpexCaseWithCapex = cumulativeOpexCase + (data.find(d => d.year === 1)?.capexCase || 0);
 
   const formatCurrency = (value: number) => value.toLocaleString('de-DE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 });
-  const formatPercentage = (value: number) => value.toFixed(4) + ' €';
+  const formatNumber = (value: number) => value.toLocaleString('de-DE', { minimumFractionDigits: 4, maximumFractionDigits: 4}) + ' €';
 
   return (
     <Card className="shadow-lg">
@@ -77,46 +77,48 @@ export function MultiYearComparisonTable({ formValues, calculations, totalCapex 
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Year</TableHead>
-              <TableHead>€ p KWh</TableHead>
-              <TableHead>€ p m³</TableHead>
-              <TableHead>€ p kg CO₂</TableHead>
-              <TableHead>OPEX BAU</TableHead>
-              <TableHead>CAPEX CASE</TableHead>
-              <TableHead>OPEX CASE</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map(d => (
-              <TableRow key={d.year}>
-                <TableCell>{d.year}</TableCell>
-                <TableCell>{formatPercentage(d.compoundedMwhPrice)}</TableCell>
-                <TableCell>{formatPercentage(d.compoundedM3Price)}</TableCell>
-                <TableCell>{formatPercentage(d.compoundedCO2Price)}</TableCell>
-                <TableCell>{formatCurrency(d.opexBau)}</TableCell>
-                <TableCell>{d.capexCase > 0 ? formatCurrency(d.capexCase) : "--"}</TableCell>
-                <TableCell>{formatCurrency(d.opexCase)}</TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Year</TableHead>
+                <TableHead>€ p KWh</TableHead>
+                <TableHead>€ p m³</TableHead>
+                <TableHead>€ p kg CO₂</TableHead>
+                <TableHead>OPEX BAU</TableHead>
+                <TableHead>CAPEX CASE</TableHead>
+                <TableHead>OPEX CASE</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow className="font-bold text-lg">
-                <TableCell colSpan={4}>Total</TableCell>
-                <TableCell className="text-blue-600">{formatCurrency(cumulativeOpexBau)}</TableCell>
-                <TableCell></TableCell>
-                <TableCell className="text-purple-600">{formatCurrency(sumOpexCaseMinusCapex)}</TableCell>
-            </TableRow>
-             <TableRow>
-                <TableCell colSpan={4}></TableCell>
-                <TableCell className="text-xs text-muted-foreground">(SUM OPEX BAU)</TableCell>
-                <TableCell></TableCell>
-                <TableCell className="text-xs text-muted-foreground">(SUM OPEX CASE - CAPEX CASE)</TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map(d => (
+                <TableRow key={d.year}>
+                  <TableCell>{d.year}</TableCell>
+                  <TableCell>{formatNumber(d.compoundedMwhPrice)}</TableCell>
+                  <TableCell>{formatNumber(d.compoundedM3Price)}</TableCell>
+                  <TableCell>{formatNumber(d.compoundedCO2Price)}</TableCell>
+                  <TableCell>{formatCurrency(d.opexBau)}</TableCell>
+                  <TableCell>{d.capexCase !== 0 ? formatCurrency(d.capexCase) : "--"}</TableCell>
+                  <TableCell>{formatCurrency(d.opexCase)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow className="font-bold text-lg">
+                  <TableCell colSpan={4}>Total</TableCell>
+                  <TableCell className="text-blue-600">{formatCurrency(cumulativeOpexBau)}</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell className="text-purple-600">{formatCurrency(sumOpexCaseWithCapex)}</TableCell>
+              </TableRow>
+               <TableRow>
+                  <TableCell colSpan={4}></TableCell>
+                  <TableCell className="text-xs text-muted-foreground">(SUM OPEX BAU)</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell className="text-xs text-muted-foreground">(SUM OPEX CASE + CAPEX CASE)</TableCell>
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   );
