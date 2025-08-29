@@ -45,3 +45,9 @@ export interface ArableFarmingFormInputs {
   electrolyzerProduction: number;
   hydrogenPrice: number;
 }
+
+export interface ArableFarmingInvestmentRow {
+  id: string;
+  item: string;
+  capex: number;
+}

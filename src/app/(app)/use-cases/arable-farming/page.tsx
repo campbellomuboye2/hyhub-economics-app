@@ -6,13 +6,14 @@ import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
-import type { ArableFarmingFormInputs } from '@/types';
+import type { ArableFarmingFormInputs, ArableFarmingInvestmentRow } from '@/types';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { ARABLE_FARMING_CONSTANTS } from '@/lib/arable-farming-constants';
 
 import { InputForm } from './components/InputForm';
 import { OutputDashboard } from './components/OutputDashboard';
 import { OpexDisplay } from './components/OpexDisplay';
+import { InvestmentTable } from './components/InvestmentTable';
 import { ConstantsAccordion } from './components/ConstantsAccordion';
 
 const formSchema = z.object({
@@ -80,6 +81,27 @@ export default function ArableFarmingPage() {
         };
     }, [watchedValues, form]);
 
+    const investmentData = useMemo((): ArableFarmingInvestmentRow[] => {
+        const i = form.getValues();
+        const C = ARABLE_FARMING_CONSTANTS;
+        const { output7, output10 } = calculations;
+
+        const capexElectrolyzer = C.const15 * i.electrolyzerProduction;
+        const capexCompressor = C.const16 * output7;
+        const capexStorage = C.const17 * output10;
+        const capexOther = 0.05 * capexElectrolyzer;
+        
+        return [
+            { id: 'electrolyzer', item: 'Electrolyzer', capex: capexElectrolyzer },
+            { id: 'compressor', item: 'Compressor', capex: capexCompressor },
+            { id: 'storage', item: 'Storage', capex: capexStorage },
+            { id: 'other', item: 'Other', capex: capexOther },
+        ];
+    }, [watchedValues, form, calculations]);
+
+    const totalCapex = useMemo(() => {
+      return investmentData.reduce((acc, row) => acc + (row.capex || 0), 0);
+    }, [investmentData]);
 
     if (!isClient) {
         return null;
@@ -102,6 +124,7 @@ export default function ArableFarmingPage() {
                 </div>
             </div>
             
+            <InvestmentTable investmentData={investmentData} totalCapex={totalCapex} />
             <ConstantsAccordion />
         </div>
     );
